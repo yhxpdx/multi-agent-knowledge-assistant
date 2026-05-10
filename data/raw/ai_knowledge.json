@@ -1,0 +1,72 @@
+[
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "RAG 检索增强生成技术详解",
+    "content": "RAG（Retrieval-Augmented Generation）是一种结合信息检索和文本生成的技术范式。\n\n核心原理：\nRAG 的工作流程分为三个阶段：\n1. 索引阶段（Indexing）：将文档进行分块（Chunking），通过 Embedding 模型转换为向量，存储到向量数据库中。\n2. 检索阶段（Retrieval）：将用户查询同样转换为向量，在向量数据库中执行相似度搜索，找到最相关的文档片段。\n3. 生成阶段（Generation）：将检索到的文档片段作为上下文，与用户问题一起输入 LLM，生成最终回答。\n\nRAG 的三种范式：\n- Naive RAG：最基本的检索-生成流程，适合简单场景\n- Advanced RAG：在 Naive 基础上增加预检索（查询重写、扩展）和后检索（重排序、压缩）优化\n- Modular RAG：模块化架构，支持自定义组件组合，适合复杂生产环境\n\n分块策略：\n- 固定大小分块（Fixed-size Chunking）：按字符数分割，简单但可能切断语义\n- 递归字符分割（Recursive Character Splitting）：按分隔符层级递归分割，保持语义完整性\n- 语义分块（Semantic Chunking）：基于语义相似度动态确定分割点，效果最好但计算开销大\n- 文档结构分块：按文档结构（标题、段落）分割，适合结构化文档\n\n常见问题与优化：\n- 幻觉问题（Hallucination）：LLM 生成了检索内容中不存在的信息。解决方案：增加引用验证、设置置信度阈值\n- 检索噪声：检索到了不相关的内容干扰生成。解决方案：重排序（Reranking）、上下文压缩\n- 多跳推理：问题需要综合多个文档的信息。解决方案：迭代检索、查询分解\n",
+    "collected_at": "2026-05-10T02:48:57.834014"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "AI Agent 核心架构与设计模式",
+    "content": "AI Agent 是一种能够自主感知环境、做出决策并执行行动的智能系统。\n\nAgent 的四大核心模块：\n1. 规划（Planning）：将复杂任务分解为可执行的子任务序列\n   - ReAct（Reasoning + Acting）：交替进行推理和行动\n   - Plan-and-Execute：先制定完整计划，再逐步执行\n   - Tree of Thoughts：探索多条推理路径，选择最优方案\n   - Reflexion：通过自我反思改进决策质量\n\n2. 记忆（Memory）：\n   - 短期记忆：当前对话的上下文信息\n   - 长期记忆：持久化存储的历史知识（通常用向量数据库）\n   - 情景记忆：特定事件的详细记录\n\n3. 工具使用（Tool Use）：\n   - Function Calling：LLM 生成结构化的函数调用请求\n   - 工具注册：定义工具的名称、描述、参数 schema\n   - 工具执行：实际调用外部 API 或本地函数\n   - 结果处理：将工具返回结果整合到对话上下文\n\n4. 反思（Reflection）：\n   - 自我评估：检查输出质量\n   - 错误修正：识别并纠正错误\n   - 经验积累：从过往任务中学习\n\n多智能体协作模式：\n- Supervisor（监督者）模式：一个主 Agent 负责任务分配，子 Agent 负责执行\n- Swarm（群体）模式：Agent 之间直接通信和任务传递\n- 层级模式：多层 Agent 组织，逐级细化任务\n- 辩论模式：多个 Agent 对同一问题提出不同观点，最终达成共识\n\nLangGraph 架构：\nLangGraph 是 LangChain 团队开发的图状态机框架，核心概念：\n- StateGraph：定义状态和转换规则\n- Node：处理函数，执行具体逻辑\n- Edge：节点间的连接，支持条件路由\n- State：贯穿整个图执行的共享状态\n- Checkpoint：状态持久化，支持断点恢复\n",
+    "collected_at": "2026-05-10T02:48:57.834035"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "向量数据库技术选型与实践",
+    "content": "向量数据库是 RAG 系统的核心基础设施，负责高效存储和检索高维向量。\n\n主流向量数据库对比：\n1. Milvus\n   - 架构：分布式，支持水平扩展\n   - 索引类型：IVF_FLAT, IVF_SQ8, IVF_PQ, HNSW, ANNOY 等\n   - 适用场景：大规模生产环境，需要高可用和高性能\n   - 部署方式：Docker、Kubernetes、Milvus Cloud\n   - 优势：社区活跃（32K+ stars），企业级特性完善\n\n2. ChromaDB\n   - 架构：轻量级，嵌入式\n   - 适用场景：原型开发、小规模应用\n   - 优势：API 简洁，上手快\n   - 劣势：不支持分布式，大规模性能受限\n\n3. FAISS（Facebook AI Similarity Search）\n   - 架构：库而非数据库，纯内存\n   - 适用场景：高性能本地搜索，大规模离线处理\n   - 优势：速度极快，支持 GPU 加速\n   - 劣势：无持久化，需要自行管理\n\n4. Qdrant\n   - 架构：Rust 实现，高性能\n   - 适用场景：需要高性能和丰富过滤的场景\n   - 优势：内存效率高，支持复杂的 payload 过滤\n\n选型决策框架：\n选择向量数据库时需要考虑的关键维度：\n- 数据规模：小（<10万）→ ChromaDB；中（10-1000万）→ Milvus/Qdrant；大（>1000万）→ Milvus 分布式\n- 部署复杂度：开发阶段优先 ChromaDB；生产环境优先 Milvus\n- 查询延迟：P99 延迟要求 <10ms → FAISS/Milvus HNSW\n- 过滤能力：需要复杂元数据过滤 → Qdrant/Milvus\n- 社区生态：Milvus > FAISS > ChromaDB > Qdrant\n\n为什么本项目选择 Milvus？\n1. 已有 Docker 部署，零额外部署成本\n2. 项目定位是展示生产级能力，Milvus 是企业首选\n3. 支持丰富的索引类型，可以做性能对比实验\n4. Python SDK 完善，与 LangChain 集成好\n",
+    "collected_at": "2026-05-10T02:48:57.834039"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "Embedding 模型选型与评估方法",
+    "content": "Embedding 模型将文本转换为稠密向量，是 RAG 系统质量的关键决定因素。\n\nEmbedding 模型的关键评估维度：\n1. 向量维度：影响存储成本和检索速度\n   - 低维（384-768）：存储小，速度快，但表达能力有限\n   - 高维（1024-4096）：表达能力强，但存储和计算成本高\n\n2. 检索准确率：核心指标\n   - Recall@K：前 K 个结果中包含正确答案的比例\n   - MRR（Mean Reciprocal Rank）：正确答案排名的倒数均值\n   - NDCG：考虑排名位置的评分\n\n3. 多语言支持：\n   - 英文模型（如 text-embedding-ada-002）：英文效果好，中文一般\n   - 中文优化模型（如 BGE、M3E）：中文效果好\n   - 多语言模型（如 multilingual-e5-large）：中英文均衡\n\n4. 推理速度：\n   - API 模型：受网络延迟影响，通常 50-200ms\n   - 本地模型：取决于硬件，CPU 100-500ms，GPU 5-50ms\n\n常见 Embedding 模型对比：\n- OpenAI text-embedding-3-small：1536 维，英文为主，API 调用\n- BGE-large-zh-v1.5：1024 维，中文优化，本地部署\n- nomic-embed-text：768 维，轻量级，本地部署（Ollama）\n- BGE-M3：1024 维，多语言，支持稠密+稀疏+多向量检索\n- M3E-base：768 维，中文优化，开源\n\n评估方法论：\n1. 准备测试集：包含 (query, positive_doc, negative_docs) 三元组\n2. 计算向量：分别对 query 和 documents 计算 embedding\n3. 执行检索：对每个 query，从所有 documents 中检索 Top-K\n4. 计算指标：Recall@K, MRR, NDCG\n5. 对比分析：不同模型在同一测试集上的表现\n\n本项目的评估计划：\n- 测试集：从知识库中抽取 50 个问题，每个问题关联 3 个相关文档\n- 候选模型：nomic-embed-text（本地 768 维）、bge-m3（本地 1024 维）\n- 评估维度：Recall@5、平均检索延迟、中文 vs 英文查询表现\n",
+    "collected_at": "2026-05-10T02:48:57.834041"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "Prompt Engineering 最佳实践",
+    "content": "Prompt Engineering 是设计和优化 LLM 输入提示的技术，直接影响 Agent 的输出质量。\n\n核心原则：\n1. 明确性（Clarity）：指令要清晰明确，避免歧义\n2. 具体性（Specificity）：给出具体的输出格式和约束\n3. 结构化（Structure）：使用分隔符、编号、标签组织 prompt\n4. 示例驱动（Example-driven）：通过 few-shot examples 引导输出\n\n常用 Prompt 技术：\n- Chain-of-Thought (CoT)：引导 LLM 逐步推理\n  示例：「请一步一步思考这个问题...」\n- Few-shot Learning：提供示例来定义输出格式\n  示例：「输入：X，输出：Y。现在输入：Z，输出：」\n- Role Playing：指定角色来约束行为\n  示例：「你是一个资深的 Python 开发工程师...」\n- Output Formatting：指定输出格式\n  示例：「请以 JSON 格式输出，包含以下字段：...」\n\nAgent 系统中的 Prompt 设计：\n1. System Prompt：定义 Agent 的角色、能力、限制\n2. Tool Description：描述可用工具的功能和参数\n3. Planning Prompt：引导任务分解和规划\n4. Reflection Prompt：引导自我评估和修正\n\nPrompt 优化的迭代流程：\n1. 基线测试：用初始 prompt 测试效果\n2. 错误分析：收集失败案例，分析原因\n3. 针对性优化：根据错误模式修改 prompt\n4. A/B 测试：对比新旧 prompt 的效果\n5. 持续迭代：重复以上过程\n\n常见陷阱：\n- Prompt 过长导致关键信息被忽略\n- 缺少输出格式约束导致输出不稳定\n- 没有处理边界情况（空输入、超长输入）\n- 过度依赖 few-shot 导致泛化能力差\n",
+    "collected_at": "2026-05-10T02:48:57.834044"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "LangGraph 多智能体编排实战",
+    "content": "LangGraph 是 LangChain 团队开发的图状态机框架，专为复杂 Agent 工作流设计。\n\n核心概念：\n- StateGraph：定义整个工作流的状态结构和转换规则\n- Node：图中的处理节点，每个节点执行一个具体操作\n- Edge：节点间的连接，支持普通边和条件边\n- State：贯穿整个执行过程的共享状态对象\n- Checkpoint：状态快照，支持断点恢复和时间旅行\n\n三种多智能体编排模式：\n\n1. Supervisor 模式\n   架构：一个 Supervisor Agent 负责任务路由，多个专业子 Agent 负责执行\n   优点：职责清晰，易于扩展新 Agent\n   缺点：Supervisor 可能成为瓶颈\n   适用：任务类型明确，需要专业分工的场景\n   实现要点：\n   - Supervisor 通过 LLM 判断用户意图\n   - 使用条件边路由到对应子 Agent\n   - 子 Agent 完成后返回 Supervisor 决定下一步\n\n2. Swarm 模式\n   架构：Agent 之间直接通信和任务传递\n   优点：灵活，无中心瓶颈\n   缺点：控制流复杂，调试困难\n   适用：Agent 之间需要频繁交互的场景\n\n3. Hierarchical 模式\n   架构：多层 Agent 组织，Manager 管理 Team Lead，Team Lead 管理 Worker\n   优点：适合复杂大规模任务\n   缺点：层数多导致延迟增加\n   适用：企业级复杂工作流\n\n为什么本项目选择 Supervisor 模式？\n1. 面试高频考点：Supervisor 是最常见的多智能体架构\n2. 代码量适中：可以在简历项目中完整实现\n3. 可扩展性好：新增子 Agent 只需添加节点和边\n4. 演示效果好：路由决策过程可以可视化展示\n\nLangGraph 状态设计：\n```python\nclass AgentState(TypedDict):\n    messages: list[BaseMessage]      # 对话消息历史\n    next_agent: str                   # 下一个要调用的 Agent\n    current_agent: str                # 当前执行的 Agent\n    tool_results: list[dict]          # 工具调用结果\n    context: str                      # RAG 检索上下文\n```\n",
+    "collected_at": "2026-05-10T02:48:57.834046"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "Function Calling 与工具设计",
+    "content": "Function Calling 是 LLM 与外部工具交互的核心机制。\n\n工作原理：\n1. 工具定义：开发者定义工具的名称、描述、参数 schema（JSON Schema 格式）\n2. 工具选择：LLM 根据用户请求和工具描述，决定是否调用工具\n3. 参数生成：LLM 生成符合 schema 的结构化参数\n4. 工具执行：系统实际调用工具函数\n5. 结果整合：将工具返回值注入对话上下文，LLM 生成最终回答\n\n工具设计最佳实践：\n1. 描述要精确：\n   差：「搜索文档」\n   好：「从知识库中搜索与查询相关的文档片段，返回 Top-K 结果及其相似度分数」\n\n2. 参数要最小化：\n   差：10 个可选参数\n   好：2-3 个必要参数 + 1-2 个可选参数\n\n3. 错误处理要完善：\n   - 工具执行失败时返回友好错误信息\n   - 不要让工具异常中断 Agent 流程\n   - 记录工具调用日志便于调试\n\n4. 返回格式要结构化：\n   差：返回原始 HTML\n   好：返回 JSON 格式的结构化数据\n\n安全考虑：\n- 代码执行工具必须有沙箱隔离\n- API 调用工具需要限流和超时控制\n- 文件操作工具需要路径校验，防止目录遍历\n- 数据库查询工具需要参数化查询，防止注入\n\n本项目的工具清单：\n1. document_search：从 Milvus 检索文档，返回带来源的片段\n2. web_search：DuckDuckGo 搜索，返回摘要和链接\n3. code_executor：受限 Python 执行，禁止危险操作\n4. calculator：数学表达式计算，使用 eval 的安全替代\n",
+    "collected_at": "2026-05-10T02:48:57.834047"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "Redis 在 AI 应用中的最佳实践",
+    "content": "Redis 在 AI Agent 应用中主要承担对话记忆管理和缓存功能。\n\n对话记忆存储设计：\n1. 数据结构选择：\n   - List：适合存储消息序列，支持范围查询\n   - Hash：适合存储会话元数据\n   - String（JSON）：简单场景下直接存储序列化数据\n   推荐：使用 List 存储消息，Hash 存储会话元数据\n\n2. Key 设计：\n   - 会话消息：chat:{session_id}:messages\n   - 会话元数据：chat:{session_id}:meta\n   - 用户会话列表：user:{user_id}:sessions\n\n3. 过期策略：\n   - 设置 TTL 自动清理过期会话（默认 7 天）\n   - 每次访问时刷新 TTL\n   - 支持手动清理\n\n上下文窗口管理：\nLLM 有 token 限制，需要管理发送给模型的上下文大小：\n1. Token 计数：使用 tiktoken 计算消息 token 数\n2. 截断策略：\n   - 保留 System Prompt（不截断）\n   - 保留最近 N 轮对话\n   - 截断最早的消息\n3. 摘要压缩：将旧对话压缩为摘要，节省 token\n\n缓存策略：\n1. Embedding 缓存：缓存文档的 embedding 向量，避免重复计算\n2. 检索结果缓存：对相同查询缓存检索结果\n3. LLM 回答缓存：对完全相同的输入缓存 LLM 输出\n\n本项目的 Redis 使用：\n- 会话存储：List 类型，每个元素是一条 JSON 消息\n- TTL：7 天自动过期\n- 最大消息数：保留最近 20 条消息（10 轮对话）\n- 序列化格式：JSON，包含 role、content、timestamp\n",
+    "collected_at": "2026-05-10T02:48:57.834049"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "FastAPI 构建 LLM 应用后端",
+    "content": "FastAPI 是构建 LLM 应用后端的理想选择，原因如下：\n\n为什么选 FastAPI 而不是 Flask？\n1. 异步支持：FastAPI 原生支持 async/await，适合 LLM 流式调用\n2. 自动文档：自动生成 OpenAPI/Swagger 文档\n3. 类型安全：基于 Pydantic 的请求/响应验证\n4. 性能：基于 Starlette 和 uvicorn，性能优于 Flask\n5. SSE 支持：通过 sse-starlette 支持 Server-Sent Events 流式响应\n\nLLM 应用的 API 设计：\n1. 流式响应（SSE）：\n   - POST /api/chat 返回 text/event-stream\n   - 每个 token 作为一个 event 发送\n   - 最后发送 [DONE] 标记\n   - 前端可以实时展示生成过程\n\n2. 错误处理：\n   - 统一错误格式：{\"error\": \"message\", \"code\": \"ERROR_CODE\"}\n   - 区分客户端错误（4xx）和服务端错误（5xx）\n   - LLM 超时返回 504\n\n3. 中间件：\n   - CORS 中间件：允许前端跨域访问\n   - 请求日志中间件：记录请求路径、耗时、状态码\n   - 异常处理中间件：捕获未处理异常\n\n流式响应实现要点：\n```python\nasync def stream_response(query: str):\n    async for chunk in agent.astream(query):\n        yield f\"data: {json.dumps({'content': chunk})}\n\n\"\n    yield \"data: [DONE]\n\n\"\n```\n\n部署注意事项：\n- 使用 uvicorn 作为 ASGI 服务器\n- 生产环境设置 workers 数量（CPU 核心数 * 2 + 1）\n- 配置超时时间（LLM 调用可能较慢）\n- 添加健康检查端点 /api/health\n",
+    "collected_at": "2026-05-10T02:48:57.834050"
+  },
+  {
+    "source": "ai_knowledge_base",
+    "url": "",
+    "title": "Docker 容器化 AI 应用部署",
+    "content": "Docker 容器化是 AI 应用部署的标准方式，确保环境一致性和可移植性。\n\nAI 应用 Docker 化的挑战：\n1. 依赖复杂：Python 包、系统库、CUDA 驱动等\n2. 镜像大：ML 框架和模型文件导致镜像体积大\n3. 启动慢：模型加载需要时间\n4. 资源需求：内存和 GPU 需求高\n\n最佳实践：\n1. 多阶段构建：\n   - 构建阶段：安装依赖、编译\n   - 运行阶段：只包含运行时必需文件\n   - 减小镜像体积 50%+\n\n2. 依赖缓存：\n   - 先复制 requirements.txt，再安装依赖\n   - 利用 Docker 层缓存，加速重复构建\n\n3. 健康检查：\n   - 定义 HEALTHCHECK 指令\n   - 检查关键服务（API、数据库连接）\n   - 设置合理的检查间隔和超时\n\n4. 资源限制：\n   - 设置内存限制（--memory）\n   - 设置 CPU 限制（--cpus）\n   - 防止容器占用过多资源\n\nDocker Compose 编排：\n```yaml\nservices:\n  app:\n    build: ./backend\n    ports: [\"8000:8000\"]\n    depends_on: [milvus, redis]\n    environment:\n      - MILVUS_HOST=milvus\n      - REDIS_HOST=redis\n\n  milvus:\n    image: milvusdb/milvus:latest\n    ports: [\"19530:19530\"]\n\n  redis:\n    image: redis:latest\n    ports: [\"6379:6379\"]\n```\n\n本项目的 Docker 架构：\n- app：FastAPI 后端 + Streamlit 前端\n- milvus：向量数据库（已有容器）\n- redis：缓存/记忆存储（已有容器）\n- ollama：本地 Embedding 模型（已有容器）\n",
+    "collected_at": "2026-05-10T02:48:57.834052"
+  }
+]

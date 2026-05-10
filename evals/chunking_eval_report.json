@@ -1,0 +1,68 @@
+{
+  "results": [
+    {
+      "chunk_size": 200,
+      "chunk_overlap": 20,
+      "total_chunks": 818,
+      "avg_chunk_len": 166.22127139364304,
+      "recall_at_k": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "chunk_size": 200,
+      "chunk_overlap": 50,
+      "total_chunks": 954,
+      "avg_chunk_len": 174.3930817610063,
+      "recall_at_k": 1.0,
+      "mrr": 0.95
+    },
+    {
+      "chunk_size": 500,
+      "chunk_overlap": 50,
+      "total_chunks": 318,
+      "avg_chunk_len": 424.4182389937107,
+      "recall_at_k": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "chunk_size": 500,
+      "chunk_overlap": 100,
+      "total_chunks": 370,
+      "avg_chunk_len": 416.76216216216216,
+      "recall_at_k": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "chunk_size": 800,
+      "chunk_overlap": 80,
+      "total_chunks": 191,
+      "avg_chunk_len": 699.696335078534,
+      "recall_at_k": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "chunk_size": 800,
+      "chunk_overlap": 150,
+      "total_chunks": 213,
+      "avg_chunk_len": 697.3802816901408,
+      "recall_at_k": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "chunk_size": 1000,
+      "chunk_overlap": 100,
+      "total_chunks": 157,
+      "avg_chunk_len": 850.312101910828,
+      "recall_at_k": 1.0,
+      "mrr": 1.0
+    }
+  ],
+  "best": {
+    "chunk_size": 200,
+    "chunk_overlap": 20,
+    "total_chunks": 818,
+    "avg_chunk_len": 166.22127139364304,
+    "recall_at_k": 1.0,
+    "mrr": 1.0
+  }
+}

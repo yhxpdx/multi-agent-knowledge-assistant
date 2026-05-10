@@ -1,0 +1,610 @@
+{
+  "nomic": {
+    "model": "nomic-embed-text",
+    "embedding_dim": 768,
+    "total_docs": 25,
+    "total_queries": 18,
+    "k": 5,
+    "recall_at_k": 0.4444444444444444,
+    "mrr": 0.2981481481481481,
+    "avg_query_time": 0.09115849600897895,
+    "details": [
+      {
+        "query": "什么是 RAG 技术？它的核心流程是什么？",
+        "lang": "zh",
+        "expected": [
+          "RAG 检索增强生成技术详解"
+        ],
+        "top_k": [
+          "LangGraph 多智能体编排实战",
+          "向量数据库技术选型与实践",
+          "AI Agent 核心架构与设计模式",
+          "Function Calling 与工具设计",
+          "RAG 检索增强生成技术详解"
+        ],
+        "hit": true,
+        "first_hit_rank": 5
+      },
+      {
+        "query": "如何设计一个多智能体系统？有哪些常见的协作模式？",
+        "lang": "zh",
+        "expected": [
+          "AI Agent 核心架构与设计模式",
+          "LangGraph 多智能体编排实战"
+        ],
+        "top_k": [
+          "LangGraph 多智能体编排实战",
+          "AI Agent 核心架构与设计模式",
+          "向量数据库技术选型与实践",
+          "Prompt Engineering 最佳实践",
+          "Redis 在 AI 应用中的最佳实践"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "向量数据库 Milvus 和 ChromaDB 有什么区别？",
+        "lang": "zh",
+        "expected": [
+          "向量数据库技术选型与实践"
+        ],
+        "top_k": [
+          "向量数据库技术选型与实践",
+          "Redis 在 AI 应用中的最佳实践",
+          "Docker 容器化 AI 应用部署",
+          "FastAPI 构建 LLM 应用后端",
+          "AI Agent 核心架构与设计模式"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "Embedding 模型怎么选？评估指标有哪些？",
+        "lang": "zh",
+        "expected": [
+          "Embedding 模型选型与评估方法"
+        ],
+        "top_k": [
+          "向量数据库技术选型与实践",
+          "Docker 容器化 AI 应用部署",
+          "FastAPI 构建 LLM 应用后端",
+          "Prompt Engineering 最佳实践",
+          "Redis 在 AI 应用中的最佳实践"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "如何用 LangGraph 实现 Supervisor 模式？",
+        "lang": "zh",
+        "expected": [
+          "LangGraph 多智能体编排实战"
+        ],
+        "top_k": [
+          "向量数据库技术选型与实践",
+          "Redis 在 AI 应用中的最佳实践",
+          "FastAPI 构建 LLM 应用后端",
+          "Docker 容器化 AI 应用部署",
+          "Prompt Engineering 最佳实践"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "Function Calling 的工作原理是什么？",
+        "lang": "zh",
+        "expected": [
+          "Function Calling 与工具设计"
+        ],
+        "top_k": [
+          "向量数据库技术选型与实践",
+          "Function Calling 与工具设计",
+          "RAG 检索增强生成技术详解",
+          "FastAPI 构建 LLM 应用后端",
+          "Prompt Engineering 最佳实践"
+        ],
+        "hit": true,
+        "first_hit_rank": 2
+      },
+      {
+        "query": "Redis 在 AI 应用中怎么用？",
+        "lang": "zh",
+        "expected": [
+          "Redis 在 AI 应用中的最佳实践"
+        ],
+        "top_k": [
+          "Redis 在 AI 应用中的最佳实践",
+          "向量数据库技术选型与实践",
+          "LangGraph 多智能体编排实战",
+          "Prompt Engineering 最佳实践",
+          "AI Agent 核心架构与设计模式"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "FastAPI 如何实现流式响应？",
+        "lang": "zh",
+        "expected": [
+          "FastAPI 构建 LLM 应用后端"
+        ],
+        "top_k": [
+          "向量数据库技术选型与实践",
+          "Redis 在 AI 应用中的最佳实践",
+          "FastAPI 构建 LLM 应用后端",
+          "Docker 容器化 AI 应用部署",
+          "Prompt Engineering 最佳实践"
+        ],
+        "hit": true,
+        "first_hit_rank": 3
+      },
+      {
+        "query": "Prompt Engineering 有哪些最佳实践？",
+        "lang": "zh",
+        "expected": [
+          "Prompt Engineering 最佳实践"
+        ],
+        "top_k": [
+          "向量数据库技术选型与实践",
+          "Docker 容器化 AI 应用部署",
+          "Prompt Engineering 最佳实践",
+          "FastAPI 构建 LLM 应用后端",
+          "Redis 在 AI 应用中的最佳实践"
+        ],
+        "hit": true,
+        "first_hit_rank": 3
+      },
+      {
+        "query": "Docker 部署 AI 应用有哪些注意事项？",
+        "lang": "zh",
+        "expected": [
+          "Docker 容器化 AI 应用部署"
+        ],
+        "top_k": [
+          "Docker 容器化 AI 应用部署",
+          "Prompt Engineering 最佳实践",
+          "Function Calling 与工具设计",
+          "向量数据库技术选型与实践",
+          "RAG 检索增强生成技术详解"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "How does RAG retrieval augmented generation work?",
+        "lang": "en",
+        "expected": [
+          "RAG 检索增强生成技术详解"
+        ],
+        "top_k": [
+          "Chat_Models",
+          "Docker 容器化 AI 应用部署",
+          "Tool_Calling",
+          "Low_Level",
+          "Output_Parsers"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "What are the key components of an AI Agent?",
+        "lang": "en",
+        "expected": [
+          "AI Agent 核心架构与设计模式"
+        ],
+        "top_k": [
+          "Chat_Models",
+          "Tool_Calling",
+          "Low_Level",
+          "Output_Parsers",
+          "Document_Loaders"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "How to choose a vector database for production?",
+        "lang": "en",
+        "expected": [
+          "向量数据库技术选型与实践"
+        ],
+        "top_k": [
+          "Tool_Calling",
+          "Low_Level",
+          "Output_Parsers",
+          "Document_Loaders",
+          "Text_Splitters"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "What is LangGraph and how to use it for multi-agent orchestration?",
+        "lang": "en",
+        "expected": [
+          "LangGraph 多智能体编排实战"
+        ],
+        "top_k": [
+          "Tool_Calling",
+          "Low_Level",
+          "Output_Parsers",
+          "Document_Loaders",
+          "Text_Splitters"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "How to design tools for LLM function calling?",
+        "lang": "en",
+        "expected": [
+          "Function Calling 与工具设计"
+        ],
+        "top_k": [
+          "Docker 容器化 AI 应用部署",
+          "Chat_Models",
+          "FastAPI 构建 LLM 应用后端",
+          "Tool_Calling",
+          "Low_Level"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "LangChain 中的 Agent 是如何工作的？",
+        "lang": "zh",
+        "expected": [
+          "Agents"
+        ],
+        "top_k": [
+          "Redis 在 AI 应用中的最佳实践",
+          "向量数据库技术选型与实践",
+          "LangGraph 多智能体编排实战",
+          "Prompt Engineering 最佳实践",
+          "AI Agent 核心架构与设计模式"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "How to use LangChain retrievers?",
+        "lang": "en",
+        "expected": [
+          "Retrievers"
+        ],
+        "top_k": [
+          "Docker 容器化 AI 应用部署",
+          "FastAPI 构建 LLM 应用后端",
+          "Chat_Models",
+          "Redis 在 AI 应用中的最佳实践",
+          "Prompt Engineering 最佳实践"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      },
+      {
+        "query": "LangChain 文本分割器有哪些类型？",
+        "lang": "zh",
+        "expected": [
+          "Text_Splitters"
+        ],
+        "top_k": [
+          "Embedding 模型选型与评估方法",
+          "RAG 检索增强生成技术详解",
+          "Docker 容器化 AI 应用部署",
+          "Function Calling 与工具设计",
+          "Prompt Engineering 最佳实践"
+        ],
+        "hit": false,
+        "first_hit_rank": null
+      }
+    ],
+    "recall_zh": 0.6666666666666666,
+    "recall_en": 0.0
+  },
+  "bge": {
+    "model": "bge-m3",
+    "embedding_dim": 1024,
+    "total_docs": 25,
+    "total_queries": 18,
+    "k": 5,
+    "recall_at_k": 1.0,
+    "mrr": 0.9722222222222222,
+    "avg_query_time": 0.3754443857404921,
+    "details": [
+      {
+        "query": "什么是 RAG 技术？它的核心流程是什么？",
+        "lang": "zh",
+        "expected": [
+          "RAG 检索增强生成技术详解"
+        ],
+        "top_k": [
+          "RAG 检索增强生成技术详解",
+          "Embedding 模型选型与评估方法",
+          "向量数据库技术选型与实践",
+          "AI Agent 核心架构与设计模式",
+          "LangGraph 多智能体编排实战"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "如何设计一个多智能体系统？有哪些常见的协作模式？",
+        "lang": "zh",
+        "expected": [
+          "AI Agent 核心架构与设计模式",
+          "LangGraph 多智能体编排实战"
+        ],
+        "top_k": [
+          "LangGraph 多智能体编排实战",
+          "AI Agent 核心架构与设计模式",
+          "Prompt Engineering 最佳实践",
+          "Docker 容器化 AI 应用部署",
+          "Redis 在 AI 应用中的最佳实践"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "向量数据库 Milvus 和 ChromaDB 有什么区别？",
+        "lang": "zh",
+        "expected": [
+          "向量数据库技术选型与实践"
+        ],
+        "top_k": [
+          "向量数据库技术选型与实践",
+          "Embedding 模型选型与评估方法",
+          "RAG 检索增强生成技术详解",
+          "LangGraph 多智能体编排实战",
+          "Docker 容器化 AI 应用部署"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "Embedding 模型怎么选？评估指标有哪些？",
+        "lang": "zh",
+        "expected": [
+          "Embedding 模型选型与评估方法"
+        ],
+        "top_k": [
+          "Embedding 模型选型与评估方法",
+          "向量数据库技术选型与实践",
+          "RAG 检索增强生成技术详解",
+          "Docker 容器化 AI 应用部署",
+          "Embedding_Models"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "如何用 LangGraph 实现 Supervisor 模式？",
+        "lang": "zh",
+        "expected": [
+          "LangGraph 多智能体编排实战"
+        ],
+        "top_k": [
+          "LangGraph 多智能体编排实战",
+          "Langgraph",
+          "Low_Level",
+          "Vectorstores",
+          "Function_Calling"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "Function Calling 的工作原理是什么？",
+        "lang": "zh",
+        "expected": [
+          "Function Calling 与工具设计"
+        ],
+        "top_k": [
+          "Function Calling 与工具设计",
+          "Function_Calling",
+          "Prompt Engineering 最佳实践",
+          "AI Agent 核心架构与设计模式",
+          "RAG 检索增强生成技术详解"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "Redis 在 AI 应用中怎么用？",
+        "lang": "zh",
+        "expected": [
+          "Redis 在 AI 应用中的最佳实践"
+        ],
+        "top_k": [
+          "Redis 在 AI 应用中的最佳实践",
+          "AI Agent 核心架构与设计模式",
+          "Embedding 模型选型与评估方法",
+          "RAG 检索增强生成技术详解",
+          "向量数据库技术选型与实践"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "FastAPI 如何实现流式响应？",
+        "lang": "zh",
+        "expected": [
+          "FastAPI 构建 LLM 应用后端"
+        ],
+        "top_k": [
+          "FastAPI 构建 LLM 应用后端",
+          "AI Agent 核心架构与设计模式",
+          "Embedding 模型选型与评估方法",
+          "Redis 在 AI 应用中的最佳实践",
+          "Prompt Engineering 最佳实践"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "Prompt Engineering 有哪些最佳实践？",
+        "lang": "zh",
+        "expected": [
+          "Prompt Engineering 最佳实践"
+        ],
+        "top_k": [
+          "Prompt Engineering 最佳实践",
+          "FastAPI 构建 LLM 应用后端",
+          "LangGraph 多智能体编排实战",
+          "Function Calling 与工具设计",
+          "Embedding 模型选型与评估方法"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "Docker 部署 AI 应用有哪些注意事项？",
+        "lang": "zh",
+        "expected": [
+          "Docker 容器化 AI 应用部署"
+        ],
+        "top_k": [
+          "Docker 容器化 AI 应用部署",
+          "Redis 在 AI 应用中的最佳实践",
+          "AI Agent 核心架构与设计模式",
+          "FastAPI 构建 LLM 应用后端",
+          "Embedding 模型选型与评估方法"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "How does RAG retrieval augmented generation work?",
+        "lang": "en",
+        "expected": [
+          "RAG 检索增强生成技术详解"
+        ],
+        "top_k": [
+          "RAG 检索增强生成技术详解",
+          "Embedding 模型选型与评估方法",
+          "Redis 在 AI 应用中的最佳实践",
+          "向量数据库技术选型与实践",
+          "AI Agent 核心架构与设计模式"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "What are the key components of an AI Agent?",
+        "lang": "en",
+        "expected": [
+          "AI Agent 核心架构与设计模式"
+        ],
+        "top_k": [
+          "AI Agent 核心架构与设计模式",
+          "Redis 在 AI 应用中的最佳实践",
+          "Agents",
+          "Chat_Models",
+          "Embedding_Models"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "How to choose a vector database for production?",
+        "lang": "en",
+        "expected": [
+          "向量数据库技术选型与实践"
+        ],
+        "top_k": [
+          "向量数据库技术选型与实践",
+          "Embedding 模型选型与评估方法",
+          "Docker 容器化 AI 应用部署",
+          "RAG 检索增强生成技术详解",
+          "Vectorstores"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "What is LangGraph and how to use it for multi-agent orchestration?",
+        "lang": "en",
+        "expected": [
+          "LangGraph 多智能体编排实战"
+        ],
+        "top_k": [
+          "LangGraph 多智能体编排实战",
+          "Langgraph",
+          "Rag",
+          "Tool_Calling",
+          "Tools"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "How to design tools for LLM function calling?",
+        "lang": "en",
+        "expected": [
+          "Function Calling 与工具设计"
+        ],
+        "top_k": [
+          "Function Calling 与工具设计",
+          "Prompt Engineering 最佳实践",
+          "FastAPI 构建 LLM 应用后端",
+          "LangGraph 多智能体编排实战",
+          "Tool_Calling"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "LangChain 中的 Agent 是如何工作的？",
+        "lang": "zh",
+        "expected": [
+          "Agents"
+        ],
+        "top_k": [
+          "AI Agent 核心架构与设计模式",
+          "Agents",
+          "Function_Calling",
+          "Document_Loaders",
+          "LangGraph 多智能体编排实战"
+        ],
+        "hit": true,
+        "first_hit_rank": 2
+      },
+      {
+        "query": "How to use LangChain retrievers?",
+        "lang": "en",
+        "expected": [
+          "Retrievers"
+        ],
+        "top_k": [
+          "Retrievers",
+          "Document_Loaders",
+          "Vectorstores",
+          "Tool_Calling",
+          "Low_Level"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      },
+      {
+        "query": "LangChain 文本分割器有哪些类型？",
+        "lang": "zh",
+        "expected": [
+          "Text_Splitters"
+        ],
+        "top_k": [
+          "Text_Splitters",
+          "LangGraph 多智能体编排实战",
+          "Document_Loaders",
+          "Output_Parsers",
+          "Chat_Models"
+        ],
+        "hit": true,
+        "first_hit_rank": 1
+      }
+    ],
+    "recall_zh": 1.0,
+    "recall_en": 1.0
+  },
+  "recommendation": "bge-m3",
+  "reason": "检索准确率更高 (Recall@5: 100.00% vs 44.44%)"
+}
