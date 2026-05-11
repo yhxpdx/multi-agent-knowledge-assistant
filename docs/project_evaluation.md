@@ -1,6 +1,6 @@
 # 项目综合评估报告
 
-评估日期：2026-05-10
+评估日期：2026-05-11
 
 ---
 
@@ -32,20 +32,20 @@
 
 | 指标 | 数值 |
 |------|------|
-| Python 文件数 | 49 |
-| 总代码行数 | 5,156 |
-| 测试文件数 | 10 |
-| 测试用例数 | 117 |
+| Python 文件数 | 55 |
+| 总代码行数 | ~5,800 |
+| 测试文件数 | 14 |
+| 测试用例数 | 158 |
 | 测试通过率 | 100% |
 
 ### 2.2 模块代码分布
 
 | 模块 | 文件数 | 说明 |
 |------|--------|------|
-| backend/core/ | 6 | 核心服务（config, embedding, milvus, redis, llm, parser） |
-| backend/agents/ | 4 | 智能体（supervisor, document_qa, web_search, code_assistant） |
+| backend/core/ | 7 | 核心服务（config, embedding, milvus, redis, llm, parser, memory_manager） |
+| backend/agents/ | 5 | 智能体（supervisor, document_qa, web_search, code_assistant, general） |
 | backend/tools/ | 4 | 工具（document_search, web_search, code_executor, calculator） |
-| backend/api/ | 5 | API 接口（chat, documents, sessions, health, main） |
+| backend/api/ | 6 | API 接口（chat, documents, sessions, memories, health, main） |
 | frontend/ | 1 | Streamlit 前端 |
 | tests/ | 10 | 测试套件 |
 | evals/ | 4 | 评估脚本 |
@@ -59,11 +59,11 @@
 
 | 测试类别 | 测试数 | 覆盖模块 |
 |----------|--------|----------|
-| 单元测试 | 74 | document_parser, embedding, milvus, redis, llm, tools |
-| 集成测试 | 10 | agent_graph (Supervisor路由+图构建), RAG pipeline |
-| API 测试 | 15 | 所有 FastAPI 端点 |
+| 单元测试 | 108 | document_parser, embedding, milvus, redis, llm, tools, memory_manager, memory_extract, short_term_memory |
+| 集成测试 | 12 | agent_graph (Supervisor路由+图构建), RAG pipeline, memory_flow |
+| API 测试 | 20 | 所有 FastAPI 端点（含 memories API） |
 | 前端测试 | 16 | 会话管理, 聊天, 文档管理, SSE解析, 健康检查 |
-| **合计** | **117** | |
+| **合计** | **158** | |
 
 ### 3.2 各模块测试详情
 
@@ -77,8 +77,12 @@
 | calculator | 11 | 基本运算, 幂运算, sqrt, 三角函数, pi, 复合表达式, 除零, 安全限制(赋值/import), 无效表达式 |
 | code_executor | 12 | print, 算术, 列表, 循环, 无输出, 安全限制(os/subprocess/open), 运行时错误, 语法错误, 输出截断 |
 | code_safety | 5 | 安全代码, 危险import(os/sys/requests), 危险函数(open/exec) |
-| agent_graph | 10 | 路由到3种Agent, 解析失败默认路由, 无效Agent名, router函数, 图构建 |
-| api | 15 | 根路径, 健康检查, 会话CRUD, 聊天(流式/非流式), 文档管理, CORS |
+| agent_graph | 10 | 路由到4种Agent, 解析失败默认路由, 无效Agent名, router函数, 图构建 |
+| memory_manager | 13 | collection创建, 记忆添加/去重/embedding失败/无效category, 检索/空结果, 删除, 列出/筛选, 格式化/空 |
+| memory_extract | 6 | 提取成功, should_save=false, JSON解析失败, LLM失败, 无效category, 空memory |
+| short_term_memory | 8 | 历史转换/截断/空, web_search读历史, agent读context/空context, supervisor记忆检索/无记忆 |
+| memory_flow | 2 | 完整记忆流程, 提取失败容错 |
+| api | 20 | 根路径, 健康检查, 会话CRUD, 聊天(流式/非流式), 文档管理, 记忆管理(列出/筛选/删除/404), CORS |
 | frontend | 16 | 会话创建/失败/列表, 消息发送/流式/错误, 文档上传/失败/列表/删除, 健康检查/部分失败/连接错误, SSE解析 |
 
 ### 3.3 测试质量评价
@@ -134,7 +138,7 @@ docker compose config  # 验证通过
 | 文档问答 | ✅ 完成 | 良好 | RAG + 来源引用 |
 | 联网搜索 | ✅ 完成 | 良好 | DuckDuckGo |
 | 代码执行 | ✅ 完成 | 优秀 | 安全沙箱 + 模块/函数黑名单 |
-| 对话记忆 | ✅ 完成 | 优秀 | Redis List + TTL + 截断 |
+| 对话记忆 | ✅ 完成 | 优秀 | 短时: Redis List + TTL + 截断; 长期: Milvus 向量记忆 + LLM 提取 |
 | SSE 流式输出 | ✅ 完成 | 良好 | FastAPI StreamingResponse |
 | 健康检查 | ✅ 完成 | 良好 | 检查 Redis/Ollama/Milvus/LLM |
 | Docker 部署 | ✅ 完成 | 良好 | docker-compose 编排5个服务 |
@@ -147,7 +151,7 @@ docker compose config  # 验证通过
 | RAG 管道 | 完整管道（解析→分块→Embedding→Milvus→检索→生成） | 完全达成 |
 | Embedding Recall@5 ≥ 90% | bge-m3 达到 100% | 超额达成 |
 | 支持3种文档格式 | 支持4种（PDF/TXT/MD/DOCX） | 超额达成 |
-| 测试覆盖率 ≥ 60% | 117个测试，覆盖所有模块 | 超额达成 |
+| 测试覆盖率 ≥ 60% | 158个测试，覆盖所有模块 | 超额达成 |
 | Docker 一键部署 | docker-compose.yml 已创建 | 达成（未实测） |
 | 面试题 15+ | 20 道详细面试题 | 超额达成 |
 
@@ -205,18 +209,25 @@ docker compose config  # 验证通过
 
 ### 6.2 完整的多智能体架构
 - LangGraph Supervisor 模式
-- 3 个专业子 Agent（文档问答/联网搜索/代码助手）
+- 4 个专业子 Agent（文档问答/联网搜索/代码助手/通用对话）
 - LLM 意图识别 + JSON 路由决策
 - 支持 SSE 流式输出
 
-### 6.3 生产级工程实践
+### 6.3 双层记忆系统
+- 短时记忆：Redis 对话历史注入 agent graph，LLM 感知上下文
+- 长期记忆：Milvus 向量库存储跨会话关键信息
+- 自动提取：LLM 判断是否值得记忆，结构化写入
+- 语义检索：新对话自动检索相关记忆，注入 agent 上下文
+- 架构统一：文档 RAG 和记忆检索共享 Milvus + bge-m3 基础设施
+
+### 6.4 生产级工程实践
 - 安全沙箱：模块黑名单、函数黑名单、输出限制
-- 对话记忆：Redis List + TTL 7天自动过期
+- 对话记忆：短时 + 长期双层架构
 - 健康检查：检查所有依赖服务状态
 - Docker Compose 一键部署
 
-### 6.4 全面的测试覆盖
-- 117 个测试用例，100% 通过
+### 6.5 全面的测试覆盖
+- 158 个测试用例，100% 通过
 - 覆盖单元/集成/API/前端四个层次
 - 所有外部依赖使用 mock
 

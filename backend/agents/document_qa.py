@@ -42,6 +42,11 @@ def document_qa_agent(state: dict) -> dict:
     # 构建带上下文的 prompt
     context = f"以下是检索到的相关文档片段：\n\n{search_result}"
 
+    # 注入长期记忆上下文
+    memory_context = state.get("context", "")
+    if memory_context:
+        context = f"{memory_context}\n\n{context}"
+
     # 构建消息列表
     llm_messages = [
         {"role": "system", "content": DOCUMENT_QA_PROMPT + "\n\n" + context},

@@ -37,9 +37,15 @@ def code_assistant_agent(state: dict) -> dict:
             user_query = msg.content
             break
 
+    # 构建系统提示（注入长期记忆上下文）
+    system_prompt = CODE_ASSISTANT_PROMPT
+    memory_context = state.get("context", "")
+    if memory_context:
+        system_prompt += f"\n\n以下是从记忆中检索到的相关信息：\n{memory_context}"
+
     # 构建消息
     llm_messages = [
-        {"role": "system", "content": CODE_ASSISTANT_PROMPT},
+        {"role": "system", "content": system_prompt},
     ]
 
     # 添加对话历史

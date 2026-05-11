@@ -17,10 +17,11 @@ import json
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, AIMessage
 
 from backend.agents.supervisor import agent_graph
 from backend.core.redis_manager import get_redis_manager
+from backend.core.memory_manager import get_memory_manager
 
 router = APIRouter(prefix="/api", tags=["chat"])
 
@@ -50,11 +51,15 @@ async def chat(request: ChatRequest):
     # 保存用户消息
     redis.add_message(session_id, "user", request.message)
 
-    # 获取对话历史
+    # 获取对话历史并注入 graph（限制最近 20 条）
     history = redis.get_history_for_llm(session_id)
-
-    # 构建消息列表
-    messages = [HumanMessage(content=request.message)]
+    messages = []
+    for msg in history[-20:]:
+        if msg["role"] == "user":
+            messages.append(HumanMessage(content=msg["content"]))
+        elif msg["role"] == "assistant":
+            messages.append(AIMessage(content=msg["content"]))
+    messages.append(HumanMessage(content=request.message))
 
     if request.stream:
         # 流式响应
@@ -71,9 +76,13 @@ async def chat(request: ChatRequest):
             except Exception as e:
                 yield f"data: {json.dumps({'error': str(e)}, ensure_ascii=False)}\n\n"
 
-            # 保存助手回复
+            # 保存助手回复并提取记忆
             if full_response:
                 redis.add_message(session_id, "assistant", full_response)
+                try:
+                    get_memory_manager().extract_memory(request.message, full_response, session_id)
+                except Exception:
+                    pass  # 记忆提取失败不影响主流程
 
             yield f"data: {json.dumps({'done': True, 'session_id': session_id}, ensure_ascii=False)}\n\n"
 
@@ -90,8 +99,12 @@ async def chat(request: ChatRequest):
                 response_content = msg.content
                 break
 
-        # 保存助手回复
+        # 保存助手回复并提取记忆
         redis.add_message(session_id, "assistant", response_content)
+        try:
+            get_memory_manager().extract_memory(request.message, response_content, session_id)
+        except Exception:
+            pass
 
         return ChatResponse(
             response=response_content,

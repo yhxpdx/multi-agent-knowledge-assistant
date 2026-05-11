@@ -9,13 +9,15 @@
 ```
 用户 → Streamlit 前端 → FastAPI 后端
                             ↓
-                     LangGraph Supervisor
+                     LangGraph Supervisor ←── 记忆检索（Milvus 向量库）
                       ↙       ↓       ↘
-            DocQA Agent  WebSearch Agent  Code Agent
+            DocQA Agent  WebSearch Agent  Code Agent  General Agent
                 ↓              ↓             ↓
            Milvus RAG    DuckDuckGo    沙箱执行
                 ↓
-              Redis (对话记忆)
+         Redis (短时记忆) + Milvus (长期记忆)
+                ↓
+         记忆提取 (LLM 判断是否保存)
 ```
 
 ## 技术栈
@@ -49,10 +51,12 @@
 - `code_executor`: 受限 Python 代码执行
 - `calculator`: 数学计算
 
-### 4. 对话记忆
-- Redis 存储对话历史
-- 按 session 隔离
-- 7 天 TTL 自动过期
+### 4. 双层记忆系统
+- **短时记忆**: Redis 存储对话历史，注入 agent graph，LLM 感知上下文
+- **长期记忆**: Milvus 向量库存储跨会话关键信息（用户偏好、结论等）
+- **自动提取**: LLM 判断对话是否值得记忆，结构化写入向量库
+- **语义检索**: 新对话时自动检索相关记忆，注入 agent 上下文
+- **记忆管理**: API + 前端支持查看、筛选、删除记忆
 
 ## 快速开始
 
@@ -103,11 +107,13 @@ multi-agent-knowledge-assistant/
 │   │   ├── supervisor.py      # Supervisor 路由
 │   │   ├── document_qa.py     # 文档问答 Agent
 │   │   ├── web_search_agent.py # 联网搜索 Agent
-│   │   └── code_assistant.py  # 代码助手 Agent
+│   │   ├── code_assistant.py  # 代码助手 Agent
+│   │   └── general_agent.py   # 通用对话 Agent
 │   ├── api/             # FastAPI 路由
 │   │   ├── chat.py            # 聊天 API (SSE)
 │   │   ├── documents.py       # 文档管理 API
 │   │   ├── sessions.py        # 会话管理 API
+│   │   ├── memories.py        # 记忆管理 API
 │   │   └── health.py          # 健康检查
 │   ├── core/            # 核心服务
 │   │   ├── config.py          # 配置管理
@@ -115,6 +121,7 @@ multi-agent-knowledge-assistant/
 │   │   ├── llm_client.py      # LLM 客户端
 │   │   ├── milvus_client.py   # Milvus 客户端
 │   │   ├── redis_manager.py   # Redis 管理
+│   │   ├── memory_manager.py  # 长期记忆管理器
 │   │   └── document_parser.py # 文档解析
 │   ├── tools/           # 工具
 │   │   ├── document_search.py
@@ -150,6 +157,8 @@ multi-agent-knowledge-assistant/
 | DELETE | /api/documents/{doc_id} | 删除文档 |
 | POST | /api/sessions | 创建会话 |
 | GET | /api/sessions | 会话列表 |
+| GET | /api/memories | 记忆列表（支持 category 筛选） |
+| DELETE | /api/memories/{id} | 删除记忆 |
 | GET | /api/health | 健康检查 |
 
 ## 技术选型评估报告

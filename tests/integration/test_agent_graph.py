@@ -76,6 +76,22 @@ class TestSupervisorNode:
         assert result["next_agent"] == "code_assistant"
 
     @patch("backend.agents.supervisor.get_llm_client")
+    def test_route_to_general(self, mock_get_llm):
+        """测试路由到通用对话 Agent"""
+        mock_llm = MagicMock()
+        mock_llm.chat.return_value = '{"agent": "general"}'
+        mock_get_llm.return_value = mock_llm
+
+        state: AgentState = {
+            "messages": [HumanMessage(content="你好")],
+            "next_agent": "",
+            "context": "",
+        }
+
+        result = supervisor_node(state)
+        assert result["next_agent"] == "general"
+
+    @patch("backend.agents.supervisor.get_llm_client")
     def test_default_route_on_parse_error(self, mock_get_llm):
         """测试 JSON 解析失败时的默认路由"""
         mock_llm = MagicMock()
@@ -89,7 +105,7 @@ class TestSupervisorNode:
         }
 
         result = supervisor_node(state)
-        assert result["next_agent"] == "document_qa"  # 默认路由
+        assert result["next_agent"] == "general"  # 默认路由到通用对话
 
     @patch("backend.agents.supervisor.get_llm_client")
     def test_invalid_agent_name(self, mock_get_llm):
@@ -105,7 +121,7 @@ class TestSupervisorNode:
         }
 
         result = supervisor_node(state)
-        assert result["next_agent"] == "document_qa"
+        assert result["next_agent"] == "general"
 
 
 class TestRouter:
@@ -133,7 +149,7 @@ class TestRouter:
     def test_router_missing_key(self):
         """缺少 next_agent key 时返回默认值"""
         state = {"messages": []}
-        assert router(state) == "document_qa"
+        assert router(state) == "general"
 
 
 class TestGraphConstruction:

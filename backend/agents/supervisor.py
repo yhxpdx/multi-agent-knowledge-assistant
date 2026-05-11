@@ -25,9 +25,11 @@ from langgraph.graph.message import add_messages
 from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
 
 from backend.core.llm_client import get_llm_client
+from backend.core.memory_manager import get_memory_manager
 from backend.agents.document_qa import document_qa_agent
 from backend.agents.web_search_agent import web_search_agent
 from backend.agents.code_assistant import code_assistant_agent
+from backend.agents.general_agent import general_agent
 
 
 # 状态定义
@@ -44,13 +46,14 @@ SUPERVISOR_PROMPT = """你是一个智能助手的路由器。根据用户的问
 - document_qa: 处理与已上传文档、知识库相关的问题（如"总结文档"、"什么是 RAG"等）
 - web_search: 需要实时信息或联网搜索的问题（如"今天的新闻"、"最新消息"等）
 - code_assistant: 代码相关的问题（如"写代码"、"解释代码"、"计算"等）
+- general: 日常闲聊、问候、常识性问题等不属于以上三类的对话（如"你好"、"你是谁"、"讲个笑话"等）
 
 请只返回一个 JSON：{"agent": "agent_name"}
 不要返回其他内容。"""
 
 
 def supervisor_node(state: AgentState) -> dict:
-    """Supervisor 节点：分析用户意图，决定路由"""
+    """Supervisor 节点：分析用户意图，检索长期记忆，决定路由"""
     llm = get_llm_client()
 
     # 获取最后一条用户消息
@@ -60,6 +63,15 @@ def supervisor_node(state: AgentState) -> dict:
         if isinstance(msg, HumanMessage):
             user_msg = msg.content
             break
+
+    # 检索相关长期记忆，写入 context
+    context = ""
+    try:
+        memory_manager = get_memory_manager()
+        memories = memory_manager.search_memories(user_msg, top_k=3)
+        context = memory_manager.format_memories(memories)
+    except Exception:
+        pass  # 记忆检索失败不影响路由
 
     # 调用 LLM 判断意图
     response = llm.chat([
@@ -77,19 +89,19 @@ def supervisor_node(state: AgentState) -> dict:
         decision = json.loads(response)
         agent = decision.get("agent", "document_qa")
     except:
-        agent = "document_qa"  # 默认路由到文档问答
+        agent = "general"  # 默认路由到通用对话
 
     # 验证 agent 名称
-    valid_agents = ["document_qa", "web_search", "code_assistant"]
+    valid_agents = ["document_qa", "web_search", "code_assistant", "general"]
     if agent not in valid_agents:
-        agent = "document_qa"
+        agent = "general"
 
-    return {"next_agent": agent}
+    return {"next_agent": agent, "context": context}
 
 
 def router(state: AgentState) -> str:
     """路由函数：根据 next_agent 字段选择下一个节点"""
-    return state.get("next_agent", "document_qa")
+    return state.get("next_agent", "general")
 
 
 def build_graph():
@@ -101,6 +113,7 @@ def build_graph():
     graph.add_node("document_qa", document_qa_agent)
     graph.add_node("web_search", web_search_agent)
     graph.add_node("code_assistant", code_assistant_agent)
+    graph.add_node("general", general_agent)
 
     # 设置入口
     graph.set_entry_point("supervisor")
@@ -113,6 +126,7 @@ def build_graph():
             "document_qa": "document_qa",
             "web_search": "web_search",
             "code_assistant": "code_assistant",
+            "general": "general",
         },
     )
 
@@ -120,6 +134,7 @@ def build_graph():
     graph.add_edge("document_qa", END)
     graph.add_edge("web_search", END)
     graph.add_edge("code_assistant", END)
+    graph.add_edge("general", END)
 
     return graph.compile()
 

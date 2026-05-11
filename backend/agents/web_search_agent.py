@@ -40,10 +40,21 @@ def web_search_agent(state: dict) -> dict:
     # 构建带搜索结果的 prompt
     context = f"以下是搜索结果：\n\n{search_result}"
 
+    # 注入长期记忆上下文
+    memory_context = state.get("context", "")
+    if memory_context:
+        context = f"{memory_context}\n\n{context}"
+
     llm_messages = [
         {"role": "system", "content": WEB_SEARCH_PROMPT + "\n\n" + context},
-        {"role": "user", "content": user_query},
     ]
+
+    # 添加对话历史
+    for msg in messages[-6:]:
+        if isinstance(msg, HumanMessage):
+            llm_messages.append({"role": "user", "content": msg.content})
+        elif isinstance(msg, AIMessage):
+            llm_messages.append({"role": "assistant", "content": msg.content})
 
     response = llm.chat(llm_messages, temperature=0.7)
 

@@ -35,6 +35,10 @@ class Settings(BaseSettings):
     MAX_HISTORY_TURNS: int = 10
     SESSION_TTL_SECONDS: int = 604800  # 7 days
 
+    # Memory (长期记忆)
+    MEMORY_TTL_DAYS: int = 90
+    MEMORY_COLLECTION: str = "memory_store"
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

@@ -129,6 +129,36 @@ with st.sidebar:
     except:
         pass
 
+    # 记忆管理
+    st.subheader("记忆管理")
+    try:
+        category_filter = st.selectbox(
+            "按分类筛选",
+            ["全部", "preference", "fact", "conclusion", "instruction"],
+            key="memory_category",
+        )
+        params = {}
+        if category_filter != "全部":
+            params["category"] = category_filter
+        resp = requests.get(f"{API_BASE}/api/memories", params=params)
+        if resp.status_code == 200:
+            memories = resp.json()
+            if memories:
+                st.write(f"共 {len(memories)} 条记忆:")
+                for mem in memories:
+                    col1, col2 = st.columns([4, 1])
+                    category = mem.get("category", "")
+                    content = mem.get("content", "")
+                    col1.caption(f"[{category}]")
+                    col1.write(content)
+                    if col2.button("🗑", key=f"del_mem_{mem.get('id', '')}"):
+                        requests.delete(f"{API_BASE}/api/memories/{mem.get('id', '')}")
+                        st.rerun()
+            else:
+                st.info("暂无记忆")
+    except Exception:
+        st.info("记忆服务未就绪")
+
     # 服务状态
     st.subheader("服务状态")
     try:
