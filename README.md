@@ -1,5 +1,7 @@
 # Multi-Agent Knowledge Assistant (多智能体知识助手)
 
+> Python 3.11+ | LangGraph | FastAPI | Milvus | Redis | Streamlit
+
 基于 LangGraph 的多智能体知识助手系统，展示 RAG + 多智能体协作 + 工具调用全链路能力。
 
 ## 架构设计
